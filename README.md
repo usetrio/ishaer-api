@@ -15,3 +15,5 @@
      or
      
      ``env "DEBUG=ishaer-api:**" npm start``
+
+**NOTE:** Remember to create a .env file in the root folder, see ``.env-example`` for more information.
