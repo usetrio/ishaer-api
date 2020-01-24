@@ -12,8 +12,18 @@ cloudinary.config({
 })
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', (req, res, next) => {
   res.render('index', { title: 'iShaer' });
 });
+
+router.post('/upload', (req, res, next) => {
+  const asset = req.files.asset;
+  console.log(asset);
+
+  res.send({
+    success: true,
+    message: 'File ready!'
+  })
+})
 
 module.exports = router;
