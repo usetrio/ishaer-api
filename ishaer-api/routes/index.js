@@ -18,8 +18,11 @@ router.get('/', (req, res, next) => {
 
 /* POST upload asset endpoint. */
 router.post('/upload', (req, res, next) => {
+  /* Get the asset from the body of the request */
   const asset = req.files.asset;
-  console.log(asset);
+
+  console.log(req.headers);
+  console.log(req.useragent);
 
   /* Take the name of the asset spliting the string by the last dot getting the extension. */
   let assetTitle = asset.name.split(/\.(?=[^\.]+$)/)[0];
@@ -44,7 +47,16 @@ router.post('/upload', (req, res, next) => {
 
       res.send({
         success: true,
-        message: 'File ready!'
+        asset: {
+          id: result.public_id,
+          title: assetTitle,
+          url: result.url,
+          bytes: result.bytes,
+          format: result.format,
+          width: result.width,
+          height: result.height,
+          created_at: result.created_at
+        }
       });
     }
   });
