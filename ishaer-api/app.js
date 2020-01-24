@@ -9,6 +9,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
 const fileUpload = require('express-fileupload');
+const useragent = require('express-useragent');
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use(sassMiddleware({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(useragent.express());
 app.use(fileUpload({
   useTempFiles: true
 }));
