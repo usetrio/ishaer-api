@@ -1,11 +1,12 @@
+/* Adding the configuration file to the app. */
+require('dotenv').config();
+
 const express = require('express');
 const router = express.Router();
 const cloudinary = require('cloudinary').v2;
 const dbConnection = require('../config/db');
 
 dbConnection();
-
-require('dotenv').config();
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
