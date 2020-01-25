@@ -3,6 +3,7 @@ const shortId =  require('shortid');
 const assetModel = require('../models/asset');
 
 const shortener = async (assetInfo, baseUrl) => {
+    /* Checking if the base URL is valid */
     if(!validUrl.isUri(baseUrl)) {
         return {
             success: false,
@@ -13,11 +14,13 @@ const shortener = async (assetInfo, baseUrl) => {
         };
     }
 
+    /* Creating the unique code for the short URL */
     const urlCode = shortId.generate();
 
     try {
         let asset = await assetModel.findOne({ url: assetInfo.url });
 
+        /* Checking if the URL is already in the database */
         if(asset) {
             return {
                 success: true,
@@ -25,8 +28,11 @@ const shortener = async (assetInfo, baseUrl) => {
             };
         }
 
+        /* Creating the new URL */
         const shortedUrl = `${baseUrl}/${urlCode}`;
 
+
+        /* Preparing the model to be inserted */
         asset = new assetModel({
             title: assetInfo.title,
             shortened_code: urlCode,

@@ -45,6 +45,7 @@ router.post('/upload', (req, res, next) => {
         });
       }
       else {
+        /* Building asset information */
         let assetInfo = {
           title: assetTitle,
           url: result.url,

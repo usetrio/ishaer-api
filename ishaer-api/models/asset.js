@@ -15,6 +15,8 @@ const assetSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
+}, {
+    versionKey: false
 });
 
-module.exports = mongoose.model('asset', assetSchema);
+module.exports = mongoose.model('Asset', assetSchema);
