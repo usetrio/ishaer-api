@@ -5,6 +5,9 @@ const express = require('express');
 const router = express.Router();
 const cloudinary = require('cloudinary').v2;
 const dbConnection = require('../config/db');
+const shortener = require('../scripts/shortener');
+
+const baseUrl = process.env.BASE_URL;
 
 dbConnection();
 
@@ -25,16 +28,12 @@ router.post('/upload', (req, res, next) => {
     /* Get the asset from the body of the request */
     const asset = req.files.asset;
 
-    console.log(req.useragent);
-
     /* Take the name of the asset spliting the string by the last dot getting the extension. */
     let assetTitle = asset.name.split(/\.(?=[^\.]+$)/)[0];
 
     /* Upload asset to Cloudinary */
-    cloudinary.uploader.upload(asset.tempFilePath, (err, result) => {
+    cloudinary.uploader.upload(asset.tempFilePath, async (err, result) => {
       if(err) {
-        console.log(err);
-
         res.render('error', { 
           message: 'An error ocurred!',
           err
@@ -46,21 +45,23 @@ router.post('/upload', (req, res, next) => {
         });
       }
       else {
-        console.log(result);
+        let assetInfo = {
+          title: assetTitle,
+          url: result.url,
+          browser: req.useragent.browser,
+          version: req.useragent.version,
+          operating_system: req.useragent.os,
+          bytes: result.bytes,
+          format: result.format,
+          width: result.width,
+          height: result.height,
+          created_at: new Date()
+        }
 
-        res.send({
-          success: true,
-          asset: {
-            id: result.public_id,
-            title: assetTitle,
-            url: result.url,
-            bytes: result.bytes,
-            format: result.format,
-            width: result.width,
-            height: result.height,
-            created_at: result.created_at
-          }
-        });
+        assetInfo = await shortener(assetInfo, baseUrl);
+
+        console.log(assetInfo);
+        res.send(assetInfo);
       }
     });
   }
