@@ -6,7 +6,7 @@ const router = express.Router();
 const cloudinary = require('cloudinary').v2;
 const dbConnection = require('../config/db');
 const shortener = require('../scripts/shortener');
-
+const assetModel = require('../models/asset');
 const baseUrl = process.env.BASE_URL;
 
 dbConnection();
@@ -70,10 +70,35 @@ router.post('/upload', (req, res, next) => {
     console.error(error);
 
     res.render('error', { 
-      message: 'An error ocurred!',
+      message: 'An error ocurred uploading the asset!',
       error
     });
   }
 });
+
+/* GET redirect to Cloudinary asset URL */
+router.get('/:code', async (req, res, next) => {
+  try {
+    const asset = await assetModel.findOne({ 
+      shortened_code: req.params.code 
+    });
+
+    if(asset) {
+      return res.redirect(asset.url);
+    }
+
+    return res.status(404).json('No URL found!');
+    
+  }
+  catch(error) {
+    console.error(error);
+
+    res.render('error', { 
+      message: 'An error ocurred getting the URL!',
+      error
+    });
+  }
+});
+
 
 module.exports = router;
