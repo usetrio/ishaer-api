@@ -100,5 +100,4 @@ router.get('/:code', async (req, res, next) => {
   }
 });
 
-
 module.exports = router;
