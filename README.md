@@ -22,7 +22,7 @@
 
 This project was generate with express-generator, see the documentation [here](https://expressjs.com/es/starter/generator.html)
 
-- bin: In this folder we have the start point of our app with the file www.
+- bin: In this folder we have the start point of our app with the file **www.js**
 - config: This folder is for any configuration file or DB scripts.
 - models: Here we can save all the database models.
 - public: This is a public folder to save scripts or stylesheets for the templates or views.
