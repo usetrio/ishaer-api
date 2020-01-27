@@ -34,6 +34,8 @@ router.post('/upload', (req, res, next) => {
     /* Upload asset to Cloudinary */
     cloudinary.uploader.upload(asset.tempFilePath, async (err, result) => {
       if(err) {
+        console.error(err);
+        
         res.render('error', { 
           message: 'An error ocurred!',
           err
