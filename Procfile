@@ -1,1 +1,0 @@
-web: node ./ishaer-api/bin/www
