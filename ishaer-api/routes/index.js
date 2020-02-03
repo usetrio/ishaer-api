@@ -86,7 +86,13 @@ router.get('/:code', async (req, res, next) => {
     });
 
     if(asset) {
-      return res.redirect(asset.url);
+      return res.status(200).json({
+        success: true,
+        asset: {
+          url: asset.url,
+          public_link: asset.public_link
+        }
+      });
     }
 
     return res.status(404).json('No URL found!');
